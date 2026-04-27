@@ -1,74 +1,76 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
 
-const defaultProducts = [
+const products = [
   {
     id: 1,
-    name: "Original Glazed Donut",
-    description: "Soft donut with sweet glazed topping.",
+    name: "Chocolate Donut",
+    description: "Rich chocolate glaze donut",
     category: "donut",
     image: "/images/donut1.png",
   },
   {
     id: 2,
-    name: "Chocolate Donut",
-    description: "Chocolate covered donut with rich flavor.",
+    name: "Original Glazed",
+    description: "Soft donut with sweet glazed topping",
     category: "donut",
     image: "/images/donut2.png",
   },
   {
     id: 3,
-    name: "Strawberry Donut",
-    description: "Fresh strawberry flavored donut.",
+    name: "Sugar Donut",
+    description: "Classic soft donut with sugar coating",
     category: "donut",
-    image: "/images/donut3.npng",
+    image: "/images/donut3.png",
   },
   {
     id: 4,
-    name: "Croissant",
-    description: "Buttery and crispy fresh croissant.",
-    category: "other",
-    image: "/images/croissant.jpg",
+    name: "Special Donut",
+    description: "Premium toppings donut",
+    category: "donut",
+    image: "/images/donut4.png",
   },
   {
     id: 5,
-    name: "Blueberry Muffin",
-    description: "Soft muffin with blueberry filling.",
-    category: "other",
-    image: "/images/muffin.jpg",
+    name: "Sprinkle Donut",
+    description: "Donut with colorful sprinkles",
+    category: "donut",
+    image: "/images/donut5.png",
   },
   {
     id: 6,
-    name: "Iced Coffee",
-    description: "Cold refreshing coffee drink.",
+    name: "Blueberry Donut",
+    description: "Blueberry flavored donut",
+    category: "donut",
+    image: "/images/donut6.png",
+  },
+  {
+    id: 7,
+    name: "Coffee",
+    description: "Fresh hot coffee",
     category: "other",
-    image: "/images/coffee.jpg",
+    image: "/images/coffee.png",
+  },
+  {
+    id: 8,
+    name: "Muffin",
+    description: "Soft fresh baked muffin",
+    category: "other",
+    image: "/images/muffin.png",
+  },
+  {
+    id: 9,
+    name: "Milk",
+    description: "Fresh cold milk",
+    category: "other",
+    image: "/images/milk.png",
   },
 ];
 
-export default function Home() {
+export default function MenuPage() {
   const router = useRouter();
-  const [products, setProducts] = useState(defaultProducts);
-
-  useEffect(() => {
-    fetch("/api/products")
-      .then((res) => res.json())
-      .then((data) => {
-        if (Array.isArray(data) && data.length > 0) {
-          setProducts(data);
-        } else if (Array.isArray(data.products) && data.products.length > 0) {
-          setProducts(data.products);
-        } else {
-          setProducts(defaultProducts);
-        }
-      })
-      .catch(() => {
-        setProducts(defaultProducts);
-      });
-  }, []);
 
   return (
     <main>
@@ -76,6 +78,7 @@ export default function Home() {
         <h2>
           <a href="/home">Zappy Bakery</a>
         </h2>
+
         <div>
           <a href="/home">Home</a>
           <a href="/menu">Menu</a>
@@ -105,6 +108,7 @@ export default function Home() {
             .map((item) => (
               <div className={styles.menuItem} key={item.id}>
                 <img src={item.image} alt={item.name} />
+
                 <div>
                   <h3>{item.name}</h3>
                   <p>{item.description}</p>
@@ -119,10 +123,11 @@ export default function Home() {
 
         <div className={styles.menuGrid}>
           {products
-            .filter((item) => item.category !== "donut")
+            .filter((item) => item.category === "other")
             .map((item) => (
               <div className={styles.menuItem} key={item.id}>
                 <img src={item.image} alt={item.name} />
+
                 <div>
                   <h3>{item.name}</h3>
                   <p>{item.description}</p>
