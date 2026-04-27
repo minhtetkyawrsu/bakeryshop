@@ -1,0 +1,28 @@
+import mysql from "mysql2/promise";
+
+export async function POST(req) {
+  try {
+    const { name, email, pickup_time, notes } = await req.json();
+
+    const db = await mysql.createConnection({
+      host: "127.0.0.1",
+      user: "root",
+      password: "",
+      database: "bakery_db",
+    });
+
+    await db.execute(
+      "INSERT INTO pickup_orders (name, email, pickup_time, notes) VALUES (?, ?, ?, ?)",
+      [name, email, pickup_time, notes]
+    );
+
+    await db.end();
+
+    return Response.json({ success: true });
+  } catch (err) {
+    return Response.json(
+      { success: false, error: err.message },
+      { status: 500 }
+    );
+  }
+}
