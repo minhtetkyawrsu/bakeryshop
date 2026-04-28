@@ -1,10 +1,10 @@
-import mysql from "mysql2/promise";
+import { db } from "@/lib/db";
 
 export async function POST(req) {
   try {
     const { items, total } = await req.json();
 
-    // VALIDATION (important)
+    // VALIDATION
     if (!items || !Array.isArray(items) || items.length === 0) {
       return Response.json(
         { success: false, error: "No items provided" },
@@ -12,19 +12,10 @@ export async function POST(req) {
       );
     }
 
-    const db = await mysql.createConnection({
-      host: "127.0.0.1",
-      user: "root",
-      password: "", // change if needed
-      database: "bakery_db",
-    });
-
     await db.execute(
       "INSERT INTO orders (items, total) VALUES (?, ?)",
       [JSON.stringify(items), Number(total)]
     );
-
-    await db.end();
 
     return Response.json({ success: true });
 
